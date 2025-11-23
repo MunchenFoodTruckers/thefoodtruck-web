@@ -17,8 +17,8 @@ export default function Logo({ className = "", size = 40 }: { className?: string
                 fill="white"
                 fillOpacity="0.3"
             />
-            <circle cx="16" cy="32" r="2" fill="#333" />
-            <circle cx="28" cy="32" r="2" fill="#333" />
+            <circle cx="16" cy="32" r="2" fill="var(--text-main)" />
+            <circle cx="28" cy="32" r="2" fill="var(--text-main)" />
             <defs>
                 <linearGradient
                     id="paint0_linear"
