@@ -1,6 +1,7 @@
 import './globals.css';
 import Link from 'next/link';
 import UserNav from './components/UserNav';
+import Logo from './components/Logo';
 import { LocationProvider } from './context/LocationContext';
 
 export default function RootLayout({
@@ -15,8 +16,32 @@ export default function RootLayout({
           <nav className="navbar">
             <div className="nav-container">
               <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
-                <Link href="/" className="logo" style={{ fontSize: '2rem' }}>
-                  🚚 München Food Truckers
+                <Link href="/" className="logo" style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  textDecoration: 'none'
+                }}>
+                  <Logo size={48} />
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{
+                      fontSize: '1.25rem',
+                      fontWeight: 800,
+                      letterSpacing: '-0.5px',
+                      color: 'var(--dark)',
+                      lineHeight: 1.1
+                    }}>
+                      MÜNCHEN
+                    </span>
+                    <span style={{
+                      fontSize: '1.25rem',
+                      fontWeight: 400,
+                      color: 'var(--primary)',
+                      lineHeight: 1.1
+                    }}>
+                      FOOD TRUCKERS
+                    </span>
+                  </div>
                 </Link>
                 <div className="nav-links">
                   <Link href="/menu">Menu</Link>

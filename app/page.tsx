@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useLocation } from './context/LocationContext';
 import { useRouter } from 'next/navigation';
+import Logo from './components/Logo';
 
 export default function HomePage() {
   const { address, setAddress, deliveryMode, setDeliveryMode } = useLocation();
@@ -145,7 +146,9 @@ export default function HomePage() {
           </div>
 
           <div className="feature-card">
-            <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>🚚</div>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+              <Logo size={64} />
+            </div>
             <h3>Fast Delivery</h3>
             <p style={{ color: 'var(--gray-500)', lineHeight: 1.6 }}>Quick service from our mobile kitchen to your table</p>
           </div>
