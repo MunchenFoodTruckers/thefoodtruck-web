@@ -40,21 +40,22 @@ export default function HomePage() {
 
         {/* Address Input Section */}
         <div style={{
-          background: 'white',
+          background: 'var(--bg-card)',
           padding: '0.5rem',
           borderRadius: '16px',
           maxWidth: '600px',
           margin: '2rem auto',
-          boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+          boxShadow: 'var(--shadow-lg)',
           display: 'flex',
           gap: '0.5rem',
-          alignItems: 'center'
+          alignItems: 'center',
+          border: '1px solid var(--border-color)'
         }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
             padding: '0 1rem',
-            borderRight: '1px solid #eee',
+            borderRight: '1px solid var(--border-color)',
             gap: '0.5rem'
           }}>
             <select
@@ -64,7 +65,7 @@ export default function HomePage() {
                 border: 'none',
                 fontWeight: 600,
                 fontSize: '1rem',
-                color: 'var(--dark)',
+                color: 'var(--text-main)',
                 outline: 'none',
                 background: 'transparent',
                 cursor: 'pointer'
@@ -87,7 +88,9 @@ export default function HomePage() {
                 padding: '1rem',
                 paddingRight: '110px', // Make space for Locate Me button
                 fontSize: '1rem',
-                outline: 'none'
+                outline: 'none',
+                background: 'transparent',
+                color: 'var(--text-main)'
               }}
             />
             <button
@@ -123,7 +126,7 @@ export default function HomePage() {
         </div>
 
         <div className="hero-buttons">
-          <Link href="/menu" style={{ color: 'var(--gray-700)', textDecoration: 'none', fontWeight: 500 }}>
+          <Link href="/menu" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: 500 }}>
             Or browse menu directly →
           </Link>
         </div>
@@ -134,7 +137,7 @@ export default function HomePage() {
           <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-1px' }}>
             Why order from us
           </h2>
-          <p style={{ fontSize: '1.1rem', color: 'var(--gray-500)', maxWidth: '560px', margin: '0 auto', letterSpacing: '-0.2px' }}>
+          <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', maxWidth: '560px', margin: '0 auto', letterSpacing: '-0.2px' }}>
             Fresh food from München's best food trucks, delivered to your door
           </p>
         </div>
@@ -143,7 +146,7 @@ export default function HomePage() {
           <div className="feature-card">
             <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>🍔</div>
             <h3>Fresh Daily</h3>
-            <p style={{ color: 'var(--gray-500)', lineHeight: 1.6 }}>Locally sourced ingredients prepared fresh every day</p>
+            <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Locally sourced ingredients prepared fresh every day</p>
           </div>
 
           <div className="feature-card">
@@ -151,13 +154,13 @@ export default function HomePage() {
               <Logo size={64} />
             </div>
             <h3>Fast Delivery</h3>
-            <p style={{ color: 'var(--gray-500)', lineHeight: 1.6 }}>Quick service from our mobile kitchen to your table</p>
+            <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>Quick service from our mobile kitchen to your table</p>
           </div>
 
           <div className="feature-card">
             <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>⭐</div>
             <h3>Top Rated</h3>
-            <p style={{ color: 'var(--gray-500)', lineHeight: 1.6 }}>München's #1 rated food truck service in 2024</p>
+            <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>München's #1 rated food truck service in 2024</p>
           </div>
         </div>
       </div>
