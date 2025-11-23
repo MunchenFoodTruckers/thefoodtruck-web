@@ -85,6 +85,7 @@ export default function HomePage() {
                 width: '100%',
                 border: 'none',
                 padding: '1rem',
+                paddingRight: '120px', // Prevent text from going under Locate Me button
                 fontSize: '1rem',
                 outline: 'none'
               }}
