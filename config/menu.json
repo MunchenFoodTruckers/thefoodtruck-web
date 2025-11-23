@@ -1,0 +1,183 @@
+{
+    "restaurant": {
+        "name": "München Food Truckers",
+        "tagline": "Authentic Street Food in the Heart of München",
+        "description": "We bring the best street food from around the world to München. Fresh ingredients, authentic recipes, made with love.",
+        "logo": "🚚",
+        "contact": {
+            "email": "hello@munchen-foodtruckers.de",
+            "phone": "+49 89 12345678"
+        }
+    },
+    "categories": [
+        {
+            "id": "burgers",
+            "name": "Burgers",
+            "description": "Juicy, handcrafted burgers",
+            "icon": "🍔"
+        },
+        {
+            "id": "tacos",
+            "name": "Tacos",
+            "description": "Authentic Mexican tacos",
+            "icon": "🌮"
+        },
+        {
+            "id": "sides",
+            "name": "Sides",
+            "description": "Perfect complements",
+            "icon": "🍟"
+        },
+        {
+            "id": "drinks",
+            "name": "Drinks",
+            "description": "Refreshing beverages",
+            "icon": "🥤"
+        },
+        {
+            "id": "desserts",
+            "name": "Desserts",
+            "description": "Sweet endings",
+            "icon": "🍰"
+        }
+    ],
+    "menuItems": [
+        {
+            "id": "1",
+            "name": "Classic Burger",
+            "description": "Beef patty, lettuce, tomato, pickles, special sauce on brioche bun",
+            "price": 8.99,
+            "categoryId": "burgers",
+            "image": "🍔",
+            "available": true,
+            "dietary": [],
+            "popular": true,
+            "calories": 650
+        },
+        {
+            "id": "2",
+            "name": "Veggie Burger",
+            "description": "Plant-based patty, avocado, sprouts, vegan mayo on whole grain bun",
+            "price": 9.99,
+            "categoryId": "burgers",
+            "image": "🥗",
+            "available": true,
+            "dietary": [
+                "vegetarian",
+                "vegan"
+            ],
+            "popular": true,
+            "calories": 520
+        },
+        {
+            "id": "3",
+            "name": "BBQ Bacon Burger",
+            "description": "Double beef, crispy bacon, cheddar, BBQ sauce, onion rings",
+            "price": 11.99,
+            "categoryId": "burgers",
+            "image": "🍔",
+            "available": true,
+            "dietary": [],
+            "popular": false,
+            "calories": 890
+        },
+        {
+            "id": "4",
+            "name": "Chicken Tacos",
+            "description": "Grilled chicken, salsa verde, cilantro, lime on corn tortillas (3 pcs)",
+            "price": 7.99,
+            "categoryId": "tacos",
+            "image": "🌮",
+            "available": true,
+            "dietary": [
+                "gluten-free"
+            ],
+            "popular": true,
+            "calories": 420
+        },
+        {
+            "id": "5",
+            "name": "Beef Tacos",
+            "description": "Seasoned beef, pico de gallo, sour cream, cheese on flour tortillas (3 pcs)",
+            "price": 8.49,
+            "categoryId": "tacos",
+            "image": "🌮",
+            "available": true,
+            "dietary": [],
+            "popular": false,
+            "calories": 540
+        },
+        {
+            "id": "6",
+            "name": "Crispy Fries",
+            "description": "Golden french fries with sea salt",
+            "price": 3.99,
+            "categoryId": "sides",
+            "image": "🍟",
+            "available": true,
+            "dietary": [
+                "vegan"
+            ],
+            "popular": true,
+            "calories": 380
+        },
+        {
+            "id": "7",
+            "name": "Onion Rings",
+            "description": "Beer-battered crispy onion rings with ranch dip",
+            "price": 4.49,
+            "categoryId": "sides",
+            "image": "🧅",
+            "available": true,
+            "dietary": [
+                "vegetarian"
+            ],
+            "popular": false,
+            "calories": 420
+        },
+        {
+            "id": "8",
+            "name": "Fresh Lemonade",
+            "description": "House-made lemonade with mint",
+            "price": 3.49,
+            "categoryId": "drinks",
+            "image": "🍋",
+            "available": true,
+            "dietary": [
+                "vegan",
+                "gluten-free"
+            ],
+            "popular": true,
+            "calories": 120
+        },
+        {
+            "id": "9",
+            "name": "Iced Tea",
+            "description": "Sweetened or unsweetened",
+            "price": 2.99,
+            "categoryId": "drinks",
+            "image": "🥤",
+            "available": true,
+            "dietary": [
+                "vegan",
+                "gluten-free"
+            ],
+            "popular": false,
+            "calories": 90
+        },
+        {
+            "id": "10",
+            "name": "Chocolate Brownie",
+            "description": "Warm brownie with vanilla ice cream",
+            "price": 5.99,
+            "categoryId": "desserts",
+            "image": "🍰",
+            "available": true,
+            "dietary": [
+                "vegetarian"
+            ],
+            "popular": true,
+            "calories": 520
+        }
+    ]
+}
