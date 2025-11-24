@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import ThemeToggle from './ThemeToggle';
 
 export default function UserNav() {
     const [user, setUser] = useState<any>(null);
@@ -23,15 +24,21 @@ export default function UserNav() {
     };
 
     if (!mounted) {
-        return <Link href="/login" className="btn-primary">Sign In</Link>;
+        return (
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <ThemeToggle />
+                <Link href="/login" className="btn-primary">Sign In</Link>
+            </div>
+        );
     }
 
     if (user) {
         return (
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <ThemeToggle />
                 <Link href="/account" style={{
                     textDecoration: 'none',
-                    color: 'var(--gray-700)',
+                    color: 'var(--text-main)',
                     fontWeight: 500,
                     fontSize: '0.95rem',
                     display: 'flex',
@@ -45,7 +52,7 @@ export default function UserNav() {
                     style={{
                         background: 'transparent',
                         border: 'none',
-                        color: 'var(--gray-700)',
+                        color: 'var(--text-main)',
                         cursor: 'pointer',
                         fontWeight: 500,
                         fontSize: '0.95rem'
@@ -57,5 +64,10 @@ export default function UserNav() {
         );
     }
 
-    return <Link href="/login" className="btn-primary">Sign In</Link>;
+    return (
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <ThemeToggle />
+            <Link href="/login" className="btn-primary">Sign In</Link>
+        </div>
+    );
 }
