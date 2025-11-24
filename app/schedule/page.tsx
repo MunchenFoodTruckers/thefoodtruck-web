@@ -1,42 +1,46 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { scheduleApi, Schedule } from '../api/schedule';
+import { motion } from 'framer-motion';
+import { MapPin, Clock, Navigation } from 'lucide-react';
+import {
+    foodTruckLocations,
+    getNearbyLocations,
+    getTodayLocations,
+    getAllLocations,
+    FoodTruckLocation,
+} from '../data/foodTruckLocations';
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export default function SchedulePage() {
-    const [schedules, setSchedules] = useState<Schedule[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [locations, setLocations] = useState<FoodTruckLocation[]>([]);
+    const [loading, setLoading] = useState(false);
     const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [viewMode, setViewMode] = useState<'today' | 'all' | 'nearby'>('today');
 
     useEffect(() => {
-        loadSchedules();
+        loadLocations();
     }, [viewMode, userLocation]);
 
-    const loadSchedules = async () => {
+    const loadLocations = () => {
         setLoading(true);
-        setError('');
-        try {
-            let data: Schedule[] = [];
+
+        // Simulate API delay
+        setTimeout(() => {
+            let data: FoodTruckLocation[] = [];
 
             if (viewMode === 'today') {
-                data = await scheduleApi.getTodaySchedules();
+                data = getTodayLocations();
             } else if (viewMode === 'nearby' && userLocation) {
-                data = await scheduleApi.getNearbySchedules(userLocation.lat, userLocation.lng);
+                data = getNearbyLocations(userLocation.lat, userLocation.lng, 10);
             } else {
-                data = await scheduleApi.getAllSchedules();
+                data = getAllLocations();
             }
 
-            setSchedules(data);
-        } catch (err) {
-            setError('Failed to load schedules. Please try again.');
-            console.error(err);
-        } finally {
+            setLocations(data);
             setLoading(false);
-        }
+        }, 500);
     };
 
     const handleLocateMe = () => {
@@ -49,11 +53,16 @@ export default function SchedulePage() {
                     });
                     setViewMode('nearby');
                 },
-                (error) => {
+                () => {
                     alert('Could not get your location. Please enable location services.');
                 }
             );
         }
+    };
+
+    const openInMaps = (location: FoodTruckLocation) => {
+        const url = `https://www.google.com/maps/search/?api=1&query=${location.coordinates.lat},${location.coordinates.lng}`;
+        window.open(url, '_blank');
     };
 
     return (
@@ -66,13 +75,15 @@ export default function SchedulePage() {
 
             <div className="container">
                 {/* View Mode Selector */}
-                <div style={{
-                    display: 'flex',
-                    gap: '1rem',
-                    marginBottom: '2rem',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center'
-                }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '1rem',
+                        marginBottom: '2rem',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                    }}
+                >
                     <button
                         onClick={() => setViewMode('today')}
                         className={viewMode === 'today' ? 'btn-primary' : 'btn-secondary'}
@@ -92,158 +103,138 @@ export default function SchedulePage() {
                         className={viewMode === 'all' ? 'btn-primary' : 'btn-secondary'}
                         style={{ borderRadius: '12px' }}
                     >
-                        🗓️ All Schedules
+                        🗓️ All Locations
                     </button>
                 </div>
 
                 {/* Loading State */}
                 {loading && (
                     <div style={{ textAlign: 'center', padding: '3rem' }}>
-                        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔄</div>
-                        <p style={{ color: 'var(--gray-600)' }}>Loading schedules...</p>
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                            style={{ fontSize: '3rem', marginBottom: '1rem' }}
+                        >
+                            🔄
+                        </motion.div>
+                        <p style={{ color: 'var(--text-muted)' }}>Loading locations...</p>
                     </div>
                 )}
 
-                {/* Error State */}
-                {error && (
-                    <div style={{
-                        background: '#fee',
-                        border: '1px solid #fcc',
-                        borderRadius: '12px',
-                        padding: '1.5rem',
-                        textAlign: 'center',
-                        marginBottom: '2rem'
-                    }}>
-                        <p style={{ color: '#c00', margin: 0 }}>{error}</p>
-                    </div>
-                )}
-
-                {/* Schedules List */}
-                {!loading && !error && schedules.length === 0 && (
+                {/* Empty State */}
+                {!loading && locations.length === 0 && (
                     <div style={{ textAlign: 'center', padding: '3rem' }}>
                         <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🚚</div>
                         <h3>No trucks found</h3>
-                        <p style={{ color: 'var(--gray-600)' }}>
+                        <p style={{ color: 'var(--text-muted)' }}>
                             {viewMode === 'today' && 'No food trucks scheduled for today.'}
                             {viewMode === 'nearby' && 'No food trucks found near your location.'}
-                            {viewMode === 'all' && 'No schedules available.'}
+                            {viewMode === 'all' && 'No locations available.'}
                         </p>
                     </div>
                 )}
 
-                {!loading && !error && schedules.length > 0 && (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-                        gap: '1.5rem'
-                    }}>
-                        {schedules.map((schedule) => (
-                            <div
-                                key={schedule.id}
+                {/* Locations Grid */}
+                {!loading && locations.length > 0 && (
+                    <div className="card-grid">
+                        {locations.map((location, index) => (
+                            <motion.div
+                                key={location.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="card"
                                 style={{
-                                    background: 'white',
-                                    borderRadius: '20px',
-                                    padding: '1.5rem',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                                    border: '1px solid rgba(0,0,0,0.06)',
-                                    transition: 'transform 0.2s, box-shadow 0.2s',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    background: 'var(--bg-card)',
                                 }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-4px)';
-                                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-                                }}
+                                onClick={() => openInMaps(location)}
                             >
-                                {/* Truck Name */}
-                                <div style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '0.75rem',
-                                    marginBottom: '1rem'
-                                }}>
-                                    <div style={{ fontSize: '2rem' }}>🚚</div>
-                                    <div>
-                                        <h3 style={{ margin: 0, fontSize: '1.25rem' }}>
-                                            {schedule.foodTruck?.name || 'Food Truck'}
-                                        </h3>
-                                        {schedule.foodTruck?.description && (
-                                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--gray-600)' }}>
-                                                {schedule.foodTruck.description}
-                                            </p>
-                                        )}
+                                {/* Header */}
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                                        <div style={{ fontSize: '2rem' }}>🚚</div>
+                                        <h3 style={{ margin: 0, fontSize: '1.25rem' }}>{location.name}</h3>
                                     </div>
+                                    <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                                        {location.description}
+                                    </p>
                                 </div>
 
                                 {/* Special Event Badge */}
-                                {schedule.specialEvent && (
-                                    <div style={{
-                                        background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)',
-                                        color: 'white',
-                                        padding: '0.5rem 1rem',
-                                        borderRadius: '8px',
-                                        fontSize: '0.9rem',
-                                        fontWeight: 600,
-                                        marginBottom: '1rem',
-                                        display: 'inline-block'
-                                    }}>
-                                        🎉 {schedule.specialEvent}
+                                {location.specialEvent && (
+                                    <div
+                                        style={{
+                                            background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)',
+                                            color: 'white',
+                                            padding: '0.5rem 1rem',
+                                            borderRadius: '8px',
+                                            fontSize: '0.9rem',
+                                            fontWeight: 600,
+                                            marginBottom: '1rem',
+                                            display: 'inline-block',
+                                        }}
+                                    >
+                                        🎉 {location.specialEvent}
                                     </div>
                                 )}
 
                                 {/* Location */}
-                                <div style={{ marginBottom: '0.75rem' }}>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'flex-start',
-                                        gap: '0.5rem'
-                                    }}>
-                                        <span style={{ fontSize: '1.2rem' }}>📍</span>
-                                        <div>
-                                            <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
-                                                {schedule.locationName}
-                                            </div>
-                                            <div style={{ fontSize: '0.9rem', color: 'var(--gray-600)' }}>
-                                                {schedule.address}
-                                            </div>
-                                        </div>
+                                <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                                    <MapPin size={18} style={{ color: 'var(--primary)', marginTop: '2px', flexShrink: 0 }} />
+                                    <div>
+                                        <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>{location.location}</div>
+                                        <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{location.address}</div>
                                     </div>
                                 </div>
 
                                 {/* Time */}
-                                <div style={{ marginBottom: '0.75rem' }}>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem'
-                                    }}>
-                                        <span style={{ fontSize: '1.2rem' }}>🕐</span>
-                                        <div>
-                                            <span style={{ fontWeight: 600 }}>{DAYS[schedule.dayOfWeek]}</span>
-                                            {' • '}
-                                            <span>{schedule.startTime} - {schedule.endTime}</span>
-                                        </div>
+                                <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <Clock size={18} style={{ color: 'var(--primary)', flexShrink: 0 }} />
+                                    <div>
+                                        <span style={{ fontWeight: 600 }}>{DAYS[location.dayOfWeek]}</span>
+                                        {' • '}
+                                        <span>{location.hours}</span>
                                     </div>
                                 </div>
 
                                 {/* Distance (if available) */}
-                                {schedule.distance !== undefined && (
-                                    <div style={{
-                                        background: 'var(--gray-100)',
-                                        padding: '0.5rem 1rem',
-                                        borderRadius: '8px',
-                                        fontSize: '0.9rem',
-                                        fontWeight: 600,
-                                        color: 'var(--primary)',
-                                        marginTop: '1rem'
-                                    }}>
-                                        📏 {schedule.distance.toFixed(1)} km away
+                                {(location as any).distance !== undefined && (
+                                    <div
+                                        style={{
+                                            background: 'var(--bg-body)',
+                                            padding: '0.5rem 1rem',
+                                            borderRadius: '8px',
+                                            fontSize: '0.9rem',
+                                            fontWeight: 600,
+                                            color: 'var(--primary)',
+                                            marginTop: '1rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem',
+                                        }}
+                                    >
+                                        <Navigation size={16} />
+                                        {(location as any).distance.toFixed(1)} km away
                                     </div>
                                 )}
-                            </div>
+
+                                {/* Open in Maps Button */}
+                                <div
+                                    style={{
+                                        marginTop: '1rem',
+                                        padding: '0.75rem',
+                                        background: 'var(--primary)',
+                                        color: 'white',
+                                        borderRadius: '8px',
+                                        textAlign: 'center',
+                                        fontWeight: 600,
+                                        fontSize: '0.9rem',
+                                    }}
+                                >
+                                    📍 Open in Google Maps
+                                </div>
+                            </motion.div>
                         ))}
                     </div>
                 )}
