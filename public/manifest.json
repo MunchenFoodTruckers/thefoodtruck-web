@@ -1,0 +1,30 @@
+{
+    "name": "München Food Truckers",
+    "short_name": "Food Truckers",
+    "description": "Order fresh, authentic street food from München's best food trucks",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#06c167",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "food",
+        "lifestyle"
+    ],
+    "lang": "de-DE",
+    "dir": "ltr"
+}
