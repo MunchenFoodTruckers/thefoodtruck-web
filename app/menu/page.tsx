@@ -96,29 +96,13 @@ export default function MenuPage() {
             return;
         }
 
-        if (!isAddressSet && deliveryMode === 'delivery') {
-            alert('Please enter a delivery address first');
-            window.location.href = '/';
+        if (cart.length === 0) {
+            alert('Your cart is empty');
             return;
         }
 
-        // Save order to past orders
-        const order = {
-            id: Date.now().toString(),
-            items: cart,
-            total: getTotal(),
-            date: new Date().toISOString(),
-            status: 'preparing',
-            deliveryMode: deliveryMode,
-            address: deliveryMode === 'delivery' ? address : 'Pickup at Truck'
-        };
-
-        const pastOrders = JSON.parse(localStorage.getItem('pastOrders') || '[]');
-        pastOrders.unshift(order);
-        localStorage.setItem('pastOrders', JSON.stringify(pastOrders));
-
-        alert(`Order placed! Total: €${getTotal().toFixed(2)}\n\nMode: ${deliveryMode.toUpperCase()}\nAddress: ${order.address}\n\nThank you ${user.name}!`);
-        clearCart();
+        // Navigate to checkout page
+        window.location.href = '/checkout';
     };
 
     if (loading) return <div className="loading">Loading delicious menu...</div>;
