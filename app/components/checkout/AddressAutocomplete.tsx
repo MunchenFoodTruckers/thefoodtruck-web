@@ -51,7 +51,6 @@ export default function AddressAutocomplete({
             return;
         }
 
-        // Debounce autocomplete requests
         if (debounceTimer.current) {
             clearTimeout(debounceTimer.current);
         }
@@ -120,13 +119,25 @@ export default function AddressAutocomplete({
     };
 
     return (
-        <div className={`relative ${className}`}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div style={{ position: 'relative' }} className={className}>
+            <label style={{
+                display: 'block',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                color: 'var(--text-main)',
+                marginBottom: '0.5rem'
+            }}>
                 Delivery Address
             </label>
 
-            <div className="relative">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div style={{ position: 'relative' }}>
+                <div style={{
+                    position: 'absolute',
+                    left: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)'
+                }}>
                     <MapPin size={20} />
                 </div>
 
@@ -138,17 +149,35 @@ export default function AddressAutocomplete({
                     onFocus={() => predictions.length > 0 && setShowDropdown(true)}
                     onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
                     placeholder={placeholder}
-                    className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all ${error ? 'border-red-500' : isValidated ? 'border-green-500' : 'border-gray-300'
-                        }`}
+                    style={{
+                        width: '100%',
+                        paddingLeft: '2.5rem',
+                        paddingRight: '3rem',
+                        padding: '0.75rem',
+                        border: `2px solid ${error ? '#ef4444' : isValidated ? 'var(--primary)' : 'var(--border-color)'}`,
+                        borderRadius: '12px',
+                        background: 'var(--bg-body)',
+                        color: 'var(--text-main)',
+                        outline: 'none',
+                        transition: 'all 0.2s',
+                        fontSize: '0.95rem'
+                    }}
                 />
 
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <div style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)'
+                }}>
                     {isLoading ? (
-                        <Loader2 size={20} className="text-gray-400 animate-spin" />
+                        <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}>
+                            <Loader2 size={20} style={{ color: 'var(--text-muted)' }} />
+                        </motion.div>
                     ) : isValidated ? (
-                        <Check size={20} className="text-green-500" />
+                        <Check size={20} style={{ color: 'var(--primary)' }} />
                     ) : error ? (
-                        <AlertCircle size={20} className="text-red-500" />
+                        <AlertCircle size={20} style={{ color: '#ef4444' }} />
                     ) : null}
                 </div>
             </div>
@@ -160,27 +189,49 @@ export default function AddressAutocomplete({
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                        style={{
+                            position: 'absolute',
+                            zIndex: 50,
+                            width: '100%',
+                            marginTop: '0.5rem',
+                            background: 'var(--bg-card)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '12px',
+                            boxShadow: 'var(--shadow-lg)',
+                            maxHeight: '240px',
+                            overflowY: 'auto'
+                        }}
                     >
-                        {predictions.map((prediction) => (
-                            <motion.button
+                        {predictions.map((prediction, index) => (
+                            <button
                                 key={prediction.place_id}
-                                whileHover={{ backgroundColor: '#f3f4f6' }}
                                 onClick={() => handleSelectPrediction(prediction)}
-                                className="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem 1rem',
+                                    textAlign: 'left',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    borderBottom: index < predictions.length - 1 ? '1px solid var(--border-color)' : 'none',
+                                    cursor: 'pointer',
+                                    transition: 'background 0.2s',
+                                    color: 'var(--text-main)'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-body)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                             >
-                                <div className="flex items-start gap-3">
-                                    <MapPin size={16} className="text-gray-400 mt-1 flex-shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+                                    <MapPin size={16} style={{ color: 'var(--text-muted)', marginTop: '2px', flexShrink: 0 }} />
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <p style={{ fontSize: '0.875rem', fontWeight: 600, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                             {prediction.structured_formatting.main_text}
                                         </p>
-                                        <p className="text-xs text-gray-500 truncate">
+                                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                             {prediction.structured_formatting.secondary_text}
                                         </p>
                                     </div>
                                 </div>
-                            </motion.button>
+                            </button>
                         ))}
                     </motion.div>
                 )}
@@ -191,7 +242,14 @@ export default function AddressAutocomplete({
                 <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 text-sm text-red-600 flex items-center gap-1"
+                    style={{
+                        marginTop: '0.5rem',
+                        fontSize: '0.875rem',
+                        color: '#ef4444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                    }}
                 >
                     <AlertCircle size={14} />
                     {error}
@@ -205,7 +263,17 @@ export default function AddressAutocomplete({
                     animate={{ opacity: 1 }}
                     onClick={handleManualValidation}
                     disabled={isLoading}
-                    className="mt-2 text-sm text-green-600 hover:text-green-700 font-medium disabled:opacity-50"
+                    style={{
+                        marginTop: '0.5rem',
+                        fontSize: '0.875rem',
+                        color: 'var(--primary)',
+                        fontWeight: 600,
+                        background: 'none',
+                        border: 'none',
+                        cursor: isLoading ? 'not-allowed' : 'pointer',
+                        opacity: isLoading ? 0.5 : 1,
+                        padding: 0
+                    }}
                 >
                     Validate this address
                 </motion.button>
@@ -216,7 +284,14 @@ export default function AddressAutocomplete({
                 <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 text-sm text-green-600 flex items-center gap-1"
+                    style={{
+                        marginTop: '0.5rem',
+                        fontSize: '0.875rem',
+                        color: 'var(--primary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.25rem'
+                    }}
                 >
                     <Check size={14} />
                     Address validated successfully
