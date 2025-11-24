@@ -2,6 +2,7 @@ import './globals.css';
 import Link from 'next/link';
 import UserNav from './components/UserNav';
 import Logo from './components/Logo';
+import Footer from './components/Footer';
 import { LocationProvider } from './context/LocationContext';
 import { ThemeProvider } from './context/ThemeContext';
 import type { Metadata, Viewport } from 'next';
@@ -117,14 +118,7 @@ export default function RootLayout({
               </div>
             </nav>
             <main>{children}</main>
-            <footer className="footer">
-              <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
-                <p>© 2025 München Food Truckers - Authentic Street Food in München</p>
-                <p style={{ fontSize: '0.875rem', opacity: 0.8, marginTop: '0.5rem' }}>
-                  📍 Marienplatz, München • 📞 +49 89 12345678 • ✉️ hello@munchen-foodtruckers.de
-                </p>
-              </div>
-            </footer>
+            <Footer />
           </LocationProvider>
         </ThemeProvider>
       </body>
